@@ -105,12 +105,18 @@ class EdgeConnect():
                 if model == 1:
                     # train
                     outputs, gen_loss, dis_loss, logs = self.edge_model.process(images_gray, edges, masks)
-
+                    print(f'EdgeModel outputs shape is: {outputs.shape}')
+                    
                     # metrics
                     precision, recall = self.edgeacc(edges * masks, outputs * masks)
                     logs.append(('precision', precision.item()))
                     logs.append(('recall', recall.item()))
-
+                    
+                    # losses to tensorboard
+                    if writer is not None:
+                        writer.add_scalar("EdgeModel/gen_loss", gen_loss.item(), epoch)
+                        writer.add_scalar("EdgeModel/dis_loss", dis_loss.item(), epoch)
+                        
                     # backward
                     self.edge_model.backward(gen_loss, dis_loss)
                     iteration = self.edge_model.iteration
@@ -121,12 +127,18 @@ class EdgeConnect():
                     # train
                     outputs, gen_loss, dis_loss, logs = self.inpaint_model.process(images, edges, masks)
                     outputs_merged = (outputs * masks) + (images * (1 - masks))
-
+                    print(f'InpaintModel outputs merged shape is: {outputs_merged.shape}')
+                    
                     # metrics
                     psnr = self.psnr(self.postprocess(images), self.postprocess(outputs_merged))
                     mae = (torch.sum(torch.abs(images - outputs_merged)) / torch.sum(images)).float()
                     logs.append(('psnr', psnr.item()))
                     logs.append(('mae', mae.item()))
+                    
+                    # losses to tensorboard
+                    if writer is not None:
+                        writer.add_scalar("InpaintModel/gen_loss", gen_loss.item(), epoch)
+                        writer.add_scalar("InpaintModel/dis_loss", dis_loss.item(), epoch)                    
 
                     # backward
                     self.inpaint_model.backward(gen_loss, dis_loss)
@@ -144,13 +156,19 @@ class EdgeConnect():
 
                     outputs, gen_loss, dis_loss, logs = self.inpaint_model.process(images, outputs.detach(), masks)
                     outputs_merged = (outputs * masks) + (images * (1 - masks))
+                    print(f'JointModel outputs merged shape is: {outputs_merged.shape}')
 
                     # metrics
                     psnr = self.psnr(self.postprocess(images), self.postprocess(outputs_merged))
                     mae = (torch.sum(torch.abs(images - outputs_merged)) / torch.sum(images)).float()
                     logs.append(('psnr', psnr.item()))
                     logs.append(('mae', mae.item()))
-
+                    
+                    # losses to tensorboard
+                    if writer is not None:
+                        writer.add_scalar("JointModel/gen_loss", gen_loss.item(), epoch)
+                        writer.add_scalar("JointModel/dis_loss", dis_loss.item(), epoch) 
+                        
                     # backward
                     self.inpaint_model.backward(gen_loss, dis_loss)
                     iteration = self.inpaint_model.iteration
