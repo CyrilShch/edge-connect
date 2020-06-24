@@ -105,7 +105,6 @@ class EdgeConnect():
                 if model == 1:
                     # train
                     outputs, gen_loss, dis_loss, logs = self.edge_model.process(images_gray, edges, masks)
-                    print(f'EdgeModel outputs shape is: {outputs.shape}')
                     
                     # metrics
                     precision, recall = self.edgeacc(edges * masks, outputs * masks)
@@ -116,6 +115,13 @@ class EdgeConnect():
                     if writer is not None:
                         writer.add_scalar("EdgeModel/gen_loss", gen_loss.item(), epoch)
                         writer.add_scalar("EdgeModel/dis_loss", dis_loss.item(), epoch)
+                        writer.add_images("EdgeModel/outputs", outputs, epoch)
+                        writer.add_images("EdgeModel/images", images, epoch)
+                        writer.add_images("EdgeModel/images_gray", images_gray, epoch)
+                        writer.add_images("EdgeModel/edges", edges, epoch)
+                        writer.add_images("EdgeModel/masks", masks, epoch)
+                        
+
                         
                     # backward
                     self.edge_model.backward(gen_loss, dis_loss)
@@ -127,7 +133,6 @@ class EdgeConnect():
                     # train
                     outputs, gen_loss, dis_loss, logs = self.inpaint_model.process(images, edges, masks)
                     outputs_merged = (outputs * masks) + (images * (1 - masks))
-                    print(f'InpaintModel outputs merged shape is: {outputs_merged.shape}')
                     
                     # metrics
                     psnr = self.psnr(self.postprocess(images), self.postprocess(outputs_merged))
@@ -138,7 +143,12 @@ class EdgeConnect():
                     # losses to tensorboard
                     if writer is not None:
                         writer.add_scalar("InpaintModel/gen_loss", gen_loss.item(), epoch)
-                        writer.add_scalar("InpaintModel/dis_loss", dis_loss.item(), epoch)                    
+                        writer.add_scalar("InpaintModel/dis_loss", dis_loss.item(), epoch)
+                        writer.add_images("InpaintModel/outputs", outputs_merged, epoch)
+                        writer.add_images("InpaintModel/images", images, epoch)
+                        writer.add_images("InpaintModel/images_gray", images_gray, epoch)
+                        writer.add_images("InpaintModel/edges", edges, epoch)
+                        writer.add_images("InpaintModel/masks", masks, epoch)                        
 
                     # backward
                     self.inpaint_model.backward(gen_loss, dis_loss)
@@ -156,7 +166,6 @@ class EdgeConnect():
 
                     outputs, gen_loss, dis_loss, logs = self.inpaint_model.process(images, outputs.detach(), masks)
                     outputs_merged = (outputs * masks) + (images * (1 - masks))
-                    print(f'JointModel outputs merged shape is: {outputs_merged.shape}')
 
                     # metrics
                     psnr = self.psnr(self.postprocess(images), self.postprocess(outputs_merged))
@@ -167,7 +176,12 @@ class EdgeConnect():
                     # losses to tensorboard
                     if writer is not None:
                         writer.add_scalar("JointModel/gen_loss", gen_loss.item(), epoch)
-                        writer.add_scalar("JointModel/dis_loss", dis_loss.item(), epoch) 
+                        writer.add_scalar("JointModel/dis_loss", dis_loss.item(), epoch)
+                        writer.add_images("JointModel/outputs", outputs_merged, epoch)
+                        writer.add_images("JointModel/images", images, epoch)
+                        writer.add_images("JointModel/images_gray", images_gray, epoch)
+                        writer.add_images("JointModel/edges", edges, epoch)
+                        writer.add_images("JointModel/masks", masks, epoch)                          
                         
                     # backward
                     self.inpaint_model.backward(gen_loss, dis_loss)
