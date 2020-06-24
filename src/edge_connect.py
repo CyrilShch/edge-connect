@@ -70,7 +70,7 @@ class EdgeConnect():
             self.edge_model.save()
             self.inpaint_model.save()
 
-    def train(self):
+    def train(self, writer=None):
         train_loader = DataLoader(
             dataset=self.train_dataset,
             batch_size=self.config.BATCH_SIZE,
