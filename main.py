@@ -9,7 +9,7 @@ from src.config import Config
 from src.edge_connect import EdgeConnect
 
 
-def main(mode=None):
+def main(mode=None, writer):
     r"""starts the model
 
     Args:
@@ -53,7 +53,7 @@ def main(mode=None):
     if config.MODE == 1:
         config.print()
         print('\nstart training...\n')
-        model.train()
+        model.train(writer)
 
     # model test
     elif config.MODE == 2:
