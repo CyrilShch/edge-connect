@@ -51,7 +51,7 @@ class Dataset(torch.utils.data.Dataset):
 
     def load_item(self, index):
 
-        size = self.input_size
+        size1, size2 = self.input_size
 
         # load image
         img = imread(self.data[index])
@@ -61,8 +61,8 @@ class Dataset(torch.utils.data.Dataset):
             img = gray2rgb(img)
 
         # resize/crop if needed
-        if size != 0:
-            img = self.resize(img, size, size)
+        if size1 != 0 and size2 != 0:
+            img = self.resize(img, size1, size2)
 
         # create grayscale image
         img_gray = rgb2gray(img)
@@ -155,7 +155,7 @@ class Dataset(torch.utils.data.Dataset):
         img_t = F.to_tensor(img).float()
         return img_t
 
-    def resize(self, img, height, width, centerCrop=True):
+    def resize(self, img, height, width, centerCrop=False):
         imgh, imgw = img.shape[0:2]
 
         if centerCrop and imgh != imgw:
