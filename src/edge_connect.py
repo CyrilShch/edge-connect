@@ -229,6 +229,7 @@ class EdgeConnect():
 
                 # sample model at checkpoints
                 if self.config.SAMPLE_INTERVAL and iteration % self.config.SAMPLE_INTERVAL == 0:
+                    print("\nstart sampling...\n")
                     self.sample()
 
                 # evaluate model at checkpoints
@@ -238,6 +239,7 @@ class EdgeConnect():
 
                 # save model at checkpoints
                 if self.config.SAVE_INTERVAL and iteration % self.config.SAVE_INTERVAL == 0:
+                    print("\nstart saving...\n")
                     self.save()
 
         print('\nEnd training....')
