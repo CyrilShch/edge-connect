@@ -116,7 +116,7 @@ class EdgeConnect():
                         writer.add_scalar("EdgeModel/gen_loss", gen_loss.item(), epoch)
                         writer.add_scalar("EdgeModel/dis_loss", dis_loss.item(), epoch)
                         
-                        if epoch % 5 == 0:
+                        if epoch % 10 == 0:
                             writer.add_images("EdgeModel/outputs", outputs, epoch)
                             writer.add_images("EdgeModel/images", images, epoch)
                             writer.add_images("EdgeModel/edges", edges, epoch)
@@ -146,7 +146,7 @@ class EdgeConnect():
                         writer.add_scalar("InpaintModel/gen_loss", gen_loss.item(), epoch)
                         writer.add_scalar("InpaintModel/dis_loss", dis_loss.item(), epoch)
                         
-                        if epoch % 5 == 0:
+                        if epoch % 10 == 0:
                             writer.add_images("InpaintModel/outputs", outputs_merged, epoch)
                             writer.add_images("InpaintModel/images", images, epoch)
                             writer.add_images("InpaintModel/edges", edges, epoch)
@@ -181,7 +181,7 @@ class EdgeConnect():
                         writer.add_scalar("JointModel/dis_loss", dis_loss.item(), epoch)
                         writer.add_images("JointModel/outputs", outputs_merged, epoch)
                         
-                        if epoch % 5 == 0:
+                        if epoch % 10 == 0:
                             writer.add_images("JointModel/images", images, epoch)
                             writer.add_images("JointModel/edges", edges, epoch)
                             writer.add_images("JointModel/masks", masks, epoch)                          
