@@ -20,11 +20,11 @@ TRAIN_MASK_FLIST: ./datasets/masks_train.flist
 VAL_MASK_FLIST: ./datasets/masks_val.flist
 TEST_MASK_FLIST: ./datasets/masks_test.flist
 
-LR: 0.0001                    # learning rate
-D2G_LR: 0.1                   # discriminator/generator learning rate ratio
+LR: 0.0005                    # learning rate
+D2G_LR: 0.5                   # discriminator/generator learning rate ratio
 BETA1: 0.0                    # adam optimizer beta1
 BETA2: 0.9                    # adam optimizer beta2
-BATCH_SIZE: 10                 # input batch size for training
+BATCH_SIZE: 32                 # input batch size for training
 INPUT_SIZE: [200, 700]               # input image size for training 0 for original size
 SIGMA: 2                      # standard deviation of the Gaussian filter used in Canny edge detector (0: random, -1: no edge)
 MAX_ITERS: 1500                # maximum number of iterations to train the model
@@ -39,8 +39,8 @@ INPAINT_ADV_LOSS_WEIGHT: 0.1  # adversarial loss weight
 GAN_LOSS: nsgan               # nsgan | lsgan | hinge
 GAN_POOL_SIZE: 0              # fake images pool size
 
-SAVE_INTERVAL: 12             # how many iterations to wait before saving model (0: never)
-SAMPLE_INTERVAL: 4            # how many iterations to wait before sampling (0: never)
+SAVE_INTERVAL: 500             # how many iterations to wait before saving model (0: never)
+SAMPLE_INTERVAL: 100            # how many iterations to wait before sampling (0: never)
 SAMPLE_SIZE: 4               # number of images to sample
 EVAL_INTERVAL: 0              # how many iterations to wait before model evaluation (0: never)
 LOG_INTERVAL: 10              # how many iterations to wait before logging training status (0: never)
