@@ -10,6 +10,7 @@ from PIL import Image
 from scipy.misc import imread
 from skimage.feature import canny
 from skimage.color import rgb2gray, gray2rgb
+from skimage import util 
 from .utils import create_mask
 
 
@@ -145,6 +146,7 @@ class Dataset(torch.utils.data.Dataset):
         # test mode: load mask non random
         if mask_type == 6:
             mask = imread(self.mask_data[index])
+            mask = util.invert(mask)
             mask = self.resize(mask, imgh, imgw, centerCrop=False)
             mask = rgb2gray(mask)
             mask = (mask > 0).astype(np.uint8) * 255
