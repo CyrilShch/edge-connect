@@ -401,13 +401,7 @@ class EdgeConnect():
             inputs = (images_gray * (1 - masks)) + masks
             outputs = self.edge_model(images_gray, edges, masks)
             outputs_merged = (outputs * masks) + (edges * (1 - masks))
-            
-            if epoch % 10 == 0:
-                writer.add_images("sample/raw_outputs", outputs, iteration)
-                writer.add_images("sample/outputs", outputs_merged, iteration)
-                writer.add_images("sample/images", images, iteration)
-                writer.add_images("sample/edges", edges, iteration)
-                writer.add_images("sample/masks", masks, iteration)              
+                 
 
         # inpaint model
         elif model == 2:
@@ -415,13 +409,7 @@ class EdgeConnect():
             inputs = (images * (1 - masks)) + masks
             outputs = self.inpaint_model(images, edges, masks)
             outputs_merged = (outputs * masks) + (images * (1 - masks))
-            
-            if epoch % 10 == 0:
-                writer.add_images("sample/raw_outputs", outputs, iteration)
-                writer.add_images("sample/outputs", outputs_merged, iteration)
-                writer.add_images("sample/images", images, iteration)
-                writer.add_images("sample/edges", edges, iteration)
-                writer.add_images("sample/masks", masks, iteration)              
+                          
 
         # inpaint with edge model / joint model
         else:
@@ -432,12 +420,6 @@ class EdgeConnect():
             outputs = self.inpaint_model(images, edges, masks)
             outputs_merged = (outputs * masks) + (images * (1 - masks))
             
-            if epoch % 10 == 0:
-                writer.add_images("sample/raw_outputs", outputs, iteration)
-                writer.add_images("sample/outputs", outputs_merged, iteration)
-                writer.add_images("sample/images", images, iteration)
-                writer.add_images("sample/edges", edges, iteration)
-                writer.add_images("sample/masks", masks, iteration)  
 
         if it is not None:
             iteration = it
