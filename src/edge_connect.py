@@ -147,6 +147,7 @@ class EdgeConnect():
                         writer.add_scalar("InpaintModel/dis_loss", dis_loss.item(), epoch)
                         
                         if epoch % 10 == 0:
+                            writer.add_images("InpaintModel/raw_outputs", outputs, epoch) 
                             writer.add_images("InpaintModel/outputs", outputs_merged, epoch)
                             writer.add_images("InpaintModel/images", images, epoch)
                             writer.add_images("InpaintModel/edges", edges, epoch)
@@ -182,6 +183,8 @@ class EdgeConnect():
                         writer.add_images("JointModel/outputs", outputs_merged, epoch)
                         
                         if epoch % 10 == 0:
+                            writer.add_images("JointModel/raw_outputs", outputs, epoch)
+                            writer.add_images("JointModel/outputs", outputs_merged, epoch)
                             writer.add_images("JointModel/images", images, epoch)
                             writer.add_images("JointModel/edges", edges, epoch)
                             writer.add_images("JointModel/masks", masks, epoch)                          
@@ -398,6 +401,13 @@ class EdgeConnect():
             inputs = (images_gray * (1 - masks)) + masks
             outputs = self.edge_model(images_gray, edges, masks)
             outputs_merged = (outputs * masks) + (edges * (1 - masks))
+            
+            if epoch % 10 == 0:
+                writer.add_images("sample/raw_outputs", outputs, iteration)
+                writer.add_images("sample/outputs", outputs_merged, iteration)
+                writer.add_images("sample/images", images, iteration)
+                writer.add_images("sample/edges", edges, iteration)
+                writer.add_images("sample/masks", masks, iteration)              
 
         # inpaint model
         elif model == 2:
@@ -405,6 +415,13 @@ class EdgeConnect():
             inputs = (images * (1 - masks)) + masks
             outputs = self.inpaint_model(images, edges, masks)
             outputs_merged = (outputs * masks) + (images * (1 - masks))
+            
+            if epoch % 10 == 0:
+                writer.add_images("sample/raw_outputs", outputs, iteration)
+                writer.add_images("sample/outputs", outputs_merged, iteration)
+                writer.add_images("sample/images", images, iteration)
+                writer.add_images("sample/edges", edges, iteration)
+                writer.add_images("sample/masks", masks, iteration)              
 
         # inpaint with edge model / joint model
         else:
@@ -414,6 +431,13 @@ class EdgeConnect():
             edges = (outputs * masks + edges * (1 - masks)).detach()
             outputs = self.inpaint_model(images, edges, masks)
             outputs_merged = (outputs * masks) + (images * (1 - masks))
+            
+            if epoch % 10 == 0:
+                writer.add_images("sample/raw_outputs", outputs, iteration)
+                writer.add_images("sample/outputs", outputs_merged, iteration)
+                writer.add_images("sample/images", images, iteration)
+                writer.add_images("sample/edges", edges, iteration)
+                writer.add_images("sample/masks", masks, iteration)  
 
         if it is not None:
             iteration = it
