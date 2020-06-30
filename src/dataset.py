@@ -139,6 +139,7 @@ class Dataset(torch.utils.data.Dataset):
         if mask_type == 3:
             mask_index = random.randint(0, len(self.mask_data) - 1)
             mask = imread(self.mask_data[mask_index])
+            mask = util.invert(mask)
             mask = self.resize(mask, imgh, imgw)
             mask = (mask > 0).astype(np.uint8) * 255       # threshold due to interpolation
             return mask
