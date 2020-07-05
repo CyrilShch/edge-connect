@@ -30,7 +30,7 @@ SIGMA: 2                      # standard deviation of the Gaussian filter used i
 MAX_ITERS: 100000                # maximum number of iterations to train the model
 
 EDGE_THRESHOLD: 0.5           # edge detection threshold
-L1_LOSS_WEIGHT: 10             # l1 loss weight
+L1_LOSS_WEIGHT: 2             # l1 loss weight
 FM_LOSS_WEIGHT: 10            # feature-matching loss weight
 STYLE_LOSS_WEIGHT: 250        # style loss weight
 CONTENT_LOSS_WEIGHT: 0.1      # perceptual loss weight
