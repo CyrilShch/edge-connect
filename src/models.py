@@ -251,7 +251,7 @@ class InpaintingModel(BaseModel):
         images_masked = (images * (1 - masks).float()) + masks
         inputs = torch.cat((images_masked, edges), dim=1)
         outputs = self.generator(inputs)                                    # in: [rgb(3) + edge(1)]
-        summary(self.generator, (4, 200, 700))
+        summary(self.generator, (4, 512, 512))
         return outputs
 
     def backward(self, gen_loss=None, dis_loss=None):
