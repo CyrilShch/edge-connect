@@ -64,6 +64,7 @@ class Dataset(torch.utils.data.Dataset):
         # resize/crop if needed
         if size1 != 0 and size2 != 0:
             img = self.resize(img, size1, size2)
+            print(img.shape)
 
         # create grayscale image
         img_gray = rgb2gray(img)
@@ -163,6 +164,7 @@ class Dataset(torch.utils.data.Dataset):
 
         if centerCrop and imgh != imgw:
             # center crop
+            print("center crop")
             side = np.minimum(imgh, imgw)
             j = (imgh - side) // 2
             i = (imgw - side) // 2
