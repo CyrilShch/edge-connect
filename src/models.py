@@ -2,6 +2,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torchsummary import summary
 from .networks import InpaintGenerator, EdgeGenerator, Discriminator
 from .loss import AdversarialLoss, PerceptualLoss, StyleLoss
 
@@ -249,9 +250,8 @@ class InpaintingModel(BaseModel):
     def forward(self, images, edges, masks):
         images_masked = (images * (1 - masks).float()) + masks
         inputs = torch.cat((images_masked, edges), dim=1)
-        print("inputs inpainting shape:", inputs.shape)
         outputs = self.generator(inputs)                                    # in: [rgb(3) + edge(1)]
-        print("outputs inpainting shape:", outputs.shape)
+        summary(self.generator, (4, 4, 200, 700))
         return outputs
 
     def backward(self, gen_loss=None, dis_loss=None):
